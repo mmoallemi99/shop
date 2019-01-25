@@ -1,0 +1,28 @@
+{% extends 'parent/main.html' %}
+{% block body %}
+    <div class="row">
+        {% if items %}
+            {% for x in items %}
+                <div class="col col-sm-4 item-box">
+                    <h2>{{ x.title }}</h2>
+                    <a href="{{ x.author.slug }}"><span class="badge badge-light">By {{ x.author }}</span></a>
+                    {% for gen in x.genre.all %}
+                        <span class="badge badge-warning">{{ gen }}</span>
+                    {% endfor %}
+                    {% if x.img %}
+                        <img class="item-img rounded img-thumbnail img-fluid mx-auto d-block" src="../media/{{ x.img }}" height="50%" width="75%">
+                    {% else %}
+                        <img class="item-img rounded img-thumbnail img-fluid mx-auto d-block" src="../media/pics/no_img.png" height="50%" width="75%">
+                    {% endif %}
+                    <p>{{ x.description|truncatechars:500 }}</p>
+                    {% if x.stock_available > 0 %}
+                        <span class="badge badge-success">Available</span>
+                    {% else %}
+                        <span class="badge badge-danger">Not Available</span>
+                    {% endif %}
+                    <a href="{{ x.author.slug }}/{{ x.slug }}"><span class="badge badge-primary">More...</span></a>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

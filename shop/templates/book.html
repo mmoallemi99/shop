@@ -1,0 +1,18 @@
+{% extends 'parent/main.html' %}
+{% block body %}
+    <h2>{{ book.title }}</h2>
+    {% for gen in x.genre.all %}
+        <span class="badge badge-warning">{{ gen }}</span>
+    {% endfor %}
+    {% if book.img %}
+        <img class="item-img rounded img-fluid" src="../../../../../media/{{ book.img }}">
+    {% else %}
+        <img class="item-img rounded img-fluid" src="../../../../../media/pics/no_img.png" height="10%" width="10%">
+    {% endif %}
+    <p>{{ book.description }}</p>
+    {% if book.stock_available == 0 %}
+        <div class="alert alert-danger">
+            <strong>Book Not Available!</strong> For More Information Contact Us.
+        </div>
+    {% endif %}
+{% endblock %}

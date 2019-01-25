@@ -1,0 +1,8 @@
+{% extends 'parent/main.html' %}
+{% block body %}
+    <div class="list-group">
+        {% for x in items %}
+            <a href="{{ x.slug }}" class="list-group-item list-group-item-action">{{ x.title }}</a>
+        {% endfor %}
+    </div>
+{% endblock %}
