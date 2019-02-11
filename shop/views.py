@@ -2,6 +2,13 @@ from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods, require_GET
 from .models import *
 
+import redis
+from django.conf import settings
+
+r = redis.StrictRedis(host=settings.REDIS_HOST,
+                      port=settings.REDIS_PORT,
+                      db=settings.REDIS_DB)
+
 # Create your views here.
 
 
