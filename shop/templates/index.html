@@ -1,8 +1,9 @@
 {% extends 'parent/main.html' %}
+
 {% block body %}
     <div class="row">
-        {% if items %}
-            {% for x in items %}
+        {% if posts %}
+            {% for x in posts %}
                 <div class="col col-sm-4 item-box">
                     <h2>{{ x.title }}</h2>
                     <a href="{{ x.author.slug }}"><span class="badge badge-light">By {{ x.author }}</span></a>
@@ -25,4 +26,5 @@
             {% endfor %}
         {% endif %}
     </div>
+    {% include 'partials/pagination.html' with page=page_obj %}
 {% endblock %}

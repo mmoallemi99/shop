@@ -1,9 +1,17 @@
-from django.shortcuts import render, get_object_or_404
-from django.views.decorators.http import require_http_methods, require_GET
+from django.shortcuts import render,\
+    get_object_or_404
+
+from django.views.decorators.http import require_http_methods,\
+    require_GET
+
 from .models import *
 
 import redis
 from django.conf import settings
+
+from django.core.paginator import Paginator,\
+    PageNotAnInteger,\
+    EmptyPage
 
 r = redis.StrictRedis(host=settings.REDIS_HOST,
                       port=settings.REDIS_PORT,
@@ -14,9 +22,18 @@ r = redis.StrictRedis(host=settings.REDIS_HOST,
 
 @require_http_methods(['GET'])
 def shop(request):
-    items = Book.objects.order_by('item_date_updated').reverse()[:5]
+    items = Book.objects.order_by('item_date_updated').reverse()
+    paginator = Paginator(items, 3)
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
     context = {
-        'items': items,
+        'page': page,
+        'posts': posts,
     }
     return render(request, 'index.html', context)
 

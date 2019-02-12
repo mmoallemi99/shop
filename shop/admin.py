@@ -4,8 +4,13 @@ from .models import *
 
 @admin.decorators.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('title', 'item_date_published', 'book_date_published', 'gen_display', 'auth_display',)
-    list_filter = ('item_date_published', 'book_date_published',)
+    list_display = ('title',
+                    'item_date_published',
+                    'book_date_published',
+                    'gen_display',
+                    'auth_display',)
+    list_filter = ('item_date_published',
+                   'book_date_published',)
     prepopulated_fields = {'slug': ('title',)}
 
     def gen_display(self, obj):
@@ -33,4 +38,5 @@ class AuthorAdmin(admin.ModelAdmin):
         'slug',
         ('date_of_birth', 'date_of_death'),
         ]
+
 
