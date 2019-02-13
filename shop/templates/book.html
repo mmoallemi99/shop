@@ -15,4 +15,9 @@
             <strong>Book Not Available!</strong> For More Information Contact Us.
         </div>
     {% endif %}
+    <p>
+        <a href="{% url "shop:book_share" author.slug book.slug %}">
+        Share this post
+        </a>
+    </p>
 {% endblock %}

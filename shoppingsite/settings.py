@@ -138,6 +138,15 @@ REST_FRAMEWORK = {
     )
 }
 
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'mark.hudson1999@gmail.com'
+EMAIL_HOST_PASSWORD = 'Zompire.1999'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 0
