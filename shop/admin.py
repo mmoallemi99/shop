@@ -40,3 +40,8 @@ class AuthorAdmin(admin.ModelAdmin):
         ]
 
 
+@admin.decorators.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'book', 'created', 'active')
+    list_filter = ('active', 'created', 'updated')
+    search_fields = ('name', 'email', 'body')

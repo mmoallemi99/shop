@@ -1,5 +1,5 @@
 from django.shortcuts import render,\
-    get_object_or_404
+    get_object_or_404, HttpResponseRedirect
 
 from django.views.decorators.http import require_http_methods,\
     require_GET
@@ -45,16 +45,31 @@ def shop(request):
 def book_detail(request, book_slug, author_slug):
     book = get_object_or_404(Book, slug=book_slug)
     author = get_object_or_404(Author, slug=author_slug)
+    comments = book.comments.filter(active=True)
+
+    new_comment = None
+
+    if request.method == 'POST':
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.book = book
+            new_comment.save()
+            return HttpResponseRedirect('/comment/')
+    else:
+        comment_form = CommentForm()
     context = {
         'book': book,
         'author': author,
+        'comments': comments,
+        'new_comment': new_comment,
+        'comment_form': comment_form,
     }
     return render(request, 'book.html', context)
 
 
-def book_share(request, book_slug, author_slug):
-    book = get_object_or_404(Book, slug=book_slug)
-    author = get_object_or_404(Author, slug=author_slug)
+def book_share(request):
+    book = get_object_or_404(Book)
     sent = False
 
     if request.method == 'POST':

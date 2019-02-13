@@ -36,7 +36,23 @@ class Book(models.Model):
     book_date_published = models.DateField()
 
     def __str__(self):
-        return "{0} By".format(self.title)
+        return "{0} By {1}".format(self.title, self.author)
 
 
+class Comment(models.Model):
+    book = models.ForeignKey(Book,
+                             on_delete=models.CASCADE,
+                             related_name='comments')
+    name = models.CharField(max_length=80)
+    email = models.EmailField()
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ('updated',)
+
+    def __str__(self):
+        return "Comment by {0} on {1}".format(self.name, self.book)
 
