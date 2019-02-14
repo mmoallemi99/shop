@@ -1,9 +1,8 @@
 from django.shortcuts import render,\
     get_object_or_404
 
-from django.views.decorators.http import require_http_methods,\
-    require_GET
-
+from django.views.decorators.http import require_http_methods, \
+    require_safe
 from .models import *
 from .forms import *
 
@@ -41,13 +40,34 @@ def shop(request):
     return render(request, 'index.html', context)
 
 
-@require_GET
+@require_http_methods(['GET', 'POST'])
 def book_detail(request, book_slug, author_slug):
     book = get_object_or_404(Book, slug=book_slug)
     author = get_object_or_404(Author, slug=author_slug)
+
+    comments = book.comments.filter(active=True)
+
+    new_comment = None
+
+    if request.method == 'POST':
+        # A comment was posted
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            # Create Comment object but don't save to database yet
+            new_comment = comment_form.save(commit=False)
+            # Assign the current post to the comment
+            new_comment.book = book
+            # Save the comment to the database
+            new_comment.save()
+    else:
+        comment_form = CommentForm()
+
     context = {
         'book': book,
         'author': author,
+        'comments': comments,
+        'new_comment': new_comment,
+        'comment_form': comment_form,
     }
     return render(request, 'book.html', context)
 
@@ -82,7 +102,7 @@ def book_share(request, book_slug, author_slug):
     return render(request, 'share.html', context)
 
 
-@require_GET
+@require_safe
 def author_detail(request, author_slug):
     author = get_object_or_404(Author, slug=author_slug)
     context = {
