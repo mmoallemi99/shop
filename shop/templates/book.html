@@ -1,9 +1,19 @@
 {% extends 'parent/main.html' %}
 {% block body %}
 	<h2>{{ book.title }}</h2>
-	{% for gen in x.genre.all %}
+	{% for gen in book.genre.all %}
 		<span class="badge badge-warning">{{ gen }}</span>
 	{% endfor %}
+	{% if book.tags.all %}
+		<div>
+			<span class="badge badge-light">Tags:</span>
+			{% for tag in book.tags.all %}
+				<a href="{% url "shop:book_list_by_tag" tag.slug %}">
+					<span class="badge badge-info">{{ tag.name }}</span>
+				</a>
+			{% endfor %}
+		</div>
+	{% endif %}
 	{% if book.img %}
 		<img class="item-img rounded img-fluid" src="../../../../../media/{{ book.img }}">
 	{% else %}
