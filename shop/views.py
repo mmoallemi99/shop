@@ -15,6 +15,8 @@ from django.core.paginator import Paginator,\
 
 from django.core.mail import send_mail
 
+from taggit.models import Tag
+
 r = redis.StrictRedis(host=settings.REDIS_HOST,
                       port=settings.REDIS_PORT,
                       db=settings.REDIS_DB)
@@ -23,8 +25,15 @@ r = redis.StrictRedis(host=settings.REDIS_HOST,
 
 
 @require_http_methods(['GET'])
-def shop(request):
+def shop(request, tag_slug=None):
     items = Book.objects.order_by('item_date_updated').reverse()
+
+    tag = None
+
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        items = items.filter(tags__in=[tag])
+
     paginator = Paginator(items, 3)
     page = request.GET.get('page')
     try:
@@ -36,6 +45,7 @@ def shop(request):
     context = {
         'page': page,
         'posts': posts,
+        'tag': tag,
     }
     return render(request, 'index.html', context)
 

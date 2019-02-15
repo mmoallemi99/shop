@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'shop.apps.ShopConfig',
     'rest_framework',
     'test_utils',
+    'taggit',
 ]
 
 MIDDLEWARE = [

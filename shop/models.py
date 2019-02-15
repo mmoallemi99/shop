@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from taggit.managers import TaggableManager
 
 
 class Genre(models.Model):
@@ -34,9 +35,10 @@ class Book(models.Model):
     item_date_published = models.DateTimeField(default=timezone.now)
     item_date_updated = models.DateTimeField(auto_now=True)
     book_date_published = models.DateField()
+    tags = TaggableManager()
 
     def __str__(self):
-        return "{0} By".format(self.title)
+        return "{0} By {1}".format(self.title, self.author)
 
 
 class Comment(models.Model):
