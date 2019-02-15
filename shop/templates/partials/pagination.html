@@ -1,18 +1,23 @@
 <ul class="pagination justify-content-center">
-    {% for i in posts.paginator.page_range %}
-        {% if posts.number == i %}
-            <li class="page-item active"><a class="page-link" href="#">{{ posts.number }}</a></li>
-        {% else %}
-            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-        {% endif %}
-    {% endfor %}
+	{% if posts.has_previous %}
+		<li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">
+			<b><</b></a></li>
+	{% else %}
+		<li class="page-item disabled"><a class="page-link" href="#">
+			<b><</b></a></li>
+	{% endif %}
+	{% for i in posts.paginator.page_range %}
+		{% if posts.number == i %}
+			<li class="page-item active"><a class="page-link" href="#">{{ posts.number }}</a></li>
+		{% else %}
+			<li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+		{% endif %}
+	{% endfor %}
+	{% if posts.has_next %}
+		<li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">
+			<b>></b></a></li>
+	{% else %}
+		<li class="page-item disabled"><a class="page-link" href="#">
+			<b>></b></a></li>
+	{% endif %}
 </ul>
-<!--
-{% if page.has_previous %}
-        <li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}">{{ page.previous_page_number }}</a></li>
-    {% endif %}
-
-{% if page.has_next %}
-        <li class="page-item"><a class="page-link" href="?page={{ page.next_page_number }}">{{ page.next_page_number }}</a></li>
-    {% endif %}
--->
