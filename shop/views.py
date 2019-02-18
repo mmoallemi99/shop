@@ -16,6 +16,7 @@ from django.core.paginator import Paginator,\
 from django.core.mail import send_mail
 
 from taggit.models import Tag
+from django.db.models import Count
 
 r = redis.StrictRedis(host=settings.REDIS_HOST,
                       port=settings.REDIS_PORT,
@@ -72,12 +73,19 @@ def book_detail(request, book_slug, author_slug):
     else:
         comment_form = CommentForm()
 
+    book_tags_ids = book.tags.values_list('id', flat=True)
+    similar_books = Book.objects.filter(tags__in=book_tags_ids)\
+        .exclude(id=book.id)
+    similar_books = similar_books.annotate(same_tags=Count('tags')) \
+        .order_by('-same_tags')[:4]
+
     context = {
         'book': book,
         'author': author,
         'comments': comments,
         'new_comment': new_comment,
         'comment_form': comment_form,
+        'similar_books': similar_books,
     }
     return render(request, 'book.html', context)
 
