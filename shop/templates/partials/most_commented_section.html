@@ -1,0 +1,23 @@
+{% load shop_tags %}
+{% get_most_commented_books as most_commented_books %}
+
+<table class="table table-dark table-striped">
+	<thead>
+	<tr>
+		<th>Book</th>
+		<th>Author</th>
+		<th>Comments</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for book in most_commented_books %}
+		{% if book.comments.count %}
+			<tr>
+				<td>{{ book.title }}</td>
+				<td>{{ book.author }}</td>
+				<td>{{ book.comments.count }}</td>
+			</tr>
+		{% endif %}
+	{% endfor %}
+	</tbody>
+</table>
