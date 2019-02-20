@@ -1,0 +1,26 @@
+{% extends 'partials/base_register.html' %}
+{% block title %}
+	register
+{% endblock %}
+{% block body %}
+	<form action="{% url 'register' %}" method="post" class="login100-form validate-form">
+		<span class="login100-form-logo">
+			<i class="zmdi zmdi-landscape"></i>
+		</span>
+		<span class="login100-form-title p-b-34 p-t-27">
+			Register
+		</span>
+		{% for field in form %}
+			<div class="wrap-input100 validate-input" data-validate="Enter {{ field.label }}">
+				{{ field.errors }}
+				<label for="{{ field.id_for_label }}">{{ field.label }}</label>
+				{{ field }}
+			</div>
+		{% endfor %}
+		<input type="hidden" name="next" value="{{ next }}"/>
+		{% csrf_token %}
+		<div class="container-login100-form-btn">
+			<input class="login100-form-btn" type="submit" value="Register">
+		</div>
+	</form>
+{% endblock %}

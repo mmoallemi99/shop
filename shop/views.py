@@ -1,5 +1,5 @@
 from django.shortcuts import render,\
-    get_object_or_404
+    get_object_or_404, HttpResponse
 
 from django.views.decorators.http import require_http_methods, \
     require_safe
@@ -17,6 +17,8 @@ from django.core.mail import send_mail
 
 from taggit.models import Tag
 from django.db.models import Count
+
+from django.contrib.auth.decorators import login_required
 
 r = redis.StrictRedis(host=settings.REDIS_HOST,
                       port=settings.REDIS_PORT,
@@ -51,6 +53,7 @@ def shop(request, tag_slug=None):
     return render(request, 'index.html', context)
 
 
+@login_required()
 @require_http_methods(['GET', 'POST'])
 def book_detail(request, book_slug, author_slug):
     book = get_object_or_404(Book, slug=book_slug)
@@ -128,13 +131,3 @@ def author_detail(request, author_slug):
     }
     return render(request, 'author.html', context)
 
-"""
-@require_GET
-def archive(request):
-    items = Book.objects.order_by('item_date_updated').reverse()
-    context = {
-        'items': items,
-    }
-    return render(request, 'archive.html', context)
-
-"""

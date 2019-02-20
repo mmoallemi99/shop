@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../../Books/Django/Packt - Django 2 By Example - 2018/Chapter02/mysite/.idea/mysite.iml" filepath="$PROJECT_DIR$/../../Books/Django/Packt - Django 2 By Example - 2018/Chapter02/mysite/.idea/mysite.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/shoppingsite.iml" filepath="$PROJECT_DIR$/.idea/shoppingsite.iml" />
     </modules>
   </component>
